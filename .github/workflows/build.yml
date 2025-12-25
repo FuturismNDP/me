@@ -1,4 +1,4 @@
-name: Build EXE
+name: 🔨 Build DuplicateRemover to EXE
 
 on:
   workflow_dispatch:
@@ -7,29 +7,37 @@ on:
 
 jobs:
   build:
+    name: 🪟 Build Windows EXE
     runs-on: windows-latest
     
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout code
       uses: actions/checkout@v4
     
-    - name: Setup Python
+    - name: 🐍 Setup Python 3.11
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
     
-    - name: Install PyInstaller
+    - name: 📦 Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller
     
-    - name: Build EXE
+    - name: 🔍 Check files
       run: |
-        pyinstaller --onefile --windowed --name "MyApp" main.py
+        echo "Files in repository:"
+        dir
+        echo "Python files:"
+        dir *.py
     
-    - name: Upload EXE
+    - name: 🔨 Build EXE from DuplicateRemover
+      run: |
+        pyinstaller --onefile --windowed --name "DuplicateRemover_v1.0" DuplicateRemover.py
+    
+    - name: 📤 Upload EXE
       uses: actions/upload-artifact@v4
       with:
-        name: MyApplication
-        path: dist/*.exe
+        name: DuplicateRemover-Windows
+        path: dist/DuplicateRemover_v1.0.exe
         retention-days: 30
